@@ -1,0 +1,8 @@
+.likeBlock {
+    display: flex;
+    align-items: center;
+}
+
+.likeBlock button {
+    margin-right: 5px;
+}
