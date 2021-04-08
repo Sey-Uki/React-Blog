@@ -1,9 +1,13 @@
+import { Component } from "react";
 import { posts } from "../../shared/projectData";
 import "./BlogContent.css";
 import { BlogCard } from "./components/BlogCard";
 
-export const BlogContent = () => {
-  const blogPosts = posts.map((item) => {
+export class BlogContent extends Component {
+  state = {
+    showBlog: true
+  }
+   blogPosts = posts.map((item) => {
     return (
       <BlogCard
         key={item.id}
@@ -13,10 +17,28 @@ export const BlogContent = () => {
     );
   });
 
+  toggleBlog = () => {
+    this.setState((state) => {
+      return{
+        showBlog: !state.showBlog
+      }
+      
+    })   
+    }
+
+render() {
   return (
     <>
-      <h1>Simple Blog</h1>
-      <div className="posts">{blogPosts}</div>
+      <button onClick={this.toggleBlog}>
+        {this.state.showBlog ? "Скрыть блог " : "Показать блог"}
+      </button>
+      {this.state.showBlog ? (
+        <>
+          <h1>Simple Blog</h1>
+          <div className="posts">{this.blogPosts}</div>
+        </>
+      ) : null}
     </>
   );
+}
 };
