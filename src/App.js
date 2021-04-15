@@ -1,7 +1,7 @@
-import { Footer } from './components/Footer/Footer';
-import './App.css';
+import { Footer } from "./components/Footer/Footer";
+import "./App.css";
 import { Header } from "./components/Header/Header";
-import { BlogContent } from './components/BlogContent/BlogContent';
+import { BlogContent } from "./components/BlogContent/BlogContent";
 
 export function App() {
   return (
@@ -11,8 +11,7 @@ export function App() {
         <BlogContent />
       </main>
 
-      <Footer year={new Date().getFullYear()}/>
+      <Footer year={new Date().getFullYear()} />
     </div>
   );
 }
-

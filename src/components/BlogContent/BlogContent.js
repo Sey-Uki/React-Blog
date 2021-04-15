@@ -6,10 +6,10 @@ import { BlogCard } from "./components/BlogCard";
 export class BlogContent extends Component {
   state = {
     showBlog: true,
-    blogArr: JSON.parse(localStorage.getItem('blogPosts')) || posts,
+    blogArr: JSON.parse(localStorage.getItem("blogPosts")) || posts,
   };
 
-  likePost = pos => {
+  likePost = (pos) => {
     const temp = this.state.blogArr;
     temp[pos].liked = !temp[pos].liked;
 
@@ -17,9 +17,8 @@ export class BlogContent extends Component {
       blogArr: temp,
     });
 
-    localStorage.setItem('blogPosts', JSON.stringify(temp))
-  }
-
+    localStorage.setItem("blogPosts", JSON.stringify(temp));
+  };
 
   toggleBlog = () => {
     this.setState((state) => {
@@ -27,6 +26,20 @@ export class BlogContent extends Component {
         showBlog: !state.showBlog,
       };
     });
+  };
+
+  deletePost = (pos) => {
+    if(window.confirm(`Are you sure? ${this.state.blogArr[pos].title}`)){
+      const temp = this.state.blogArr;
+    temp.splice(pos, 1);
+
+    this.setState({
+      blogArr: temp,
+    });
+
+    localStorage.setItem("blogPosts", JSON.stringify(temp));
+    }
+    
   };
 
   render() {
@@ -38,6 +51,7 @@ export class BlogContent extends Component {
           description={item.description}
           liked={item.liked}
           likePost={() => this.likePost(pos)}
+          deletePost={() => this.deletePost(pos)}
         />
       );
     });
@@ -55,4 +69,4 @@ export class BlogContent extends Component {
       </>
     );
   }
-};
+}

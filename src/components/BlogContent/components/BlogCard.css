@@ -1,8 +1,12 @@
-.likeBlock {
+.postsBlog {
     display: flex;
     align-items: center;
+    width: 900px;
+    margin: 0 auto;
 }
 
-.likeBlock button {
-    margin-right: 5px;
+.deleteIcon svg, .likeBtn svg{
+    font-size: 35px;
 }
+
+
