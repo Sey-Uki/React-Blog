@@ -11,7 +11,7 @@ export class BlogContent extends Component {
 
   likePost = pos => {
     const temp = this.state.blogArr;
-    temp[pos].likeCount++;
+    temp[pos].liked = !temp[pos].liked;
 
     this.setState({
       blogArr: temp,
@@ -34,7 +34,7 @@ export class BlogContent extends Component {
           key={item.id}
           title={item.title}
           description={item.description}
-          likeCount={item.likeCount}
+          liked={item.liked}
           likePost={() => this.likePost(pos)}
         />
       );
