@@ -6,7 +6,7 @@ import { BlogCard } from "./components/BlogCard";
 export class BlogContent extends Component {
   state = {
     showBlog: true,
-    blogArr: posts,
+    blogArr: JSON.parse(localStorage.getItem('blogPosts')) || posts,
   };
 
   likePost = pos => {
@@ -16,6 +16,8 @@ export class BlogContent extends Component {
     this.setState({
       blogArr: temp,
     });
+
+    localStorage.setItem('blogPosts', JSON.stringify(temp))
   }
 
 
