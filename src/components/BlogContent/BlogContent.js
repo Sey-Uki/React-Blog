@@ -1,72 +1,62 @@
-import { Component } from "react";
+import { useState } from "react";
 import { posts } from "../../shared/projectData";
 import "./BlogContent.css";
 import { BlogCard } from "./components/BlogCard";
+import { EditForm } from "./components/EditForm";
 
-export class BlogContent extends Component {
-  state = {
-    showBlog: true,
-    blogArr: JSON.parse(localStorage.getItem("blogPosts")) || posts,
-  };
+export const BlogContent = () => {
+  const [blogArr, setBlogArr] = useState(
+    JSON.parse(localStorage.getItem("blogPosts")) || posts
+  );
 
-  likePost = (pos) => {
-    const temp = this.state.blogArr;
+  const [showEditForm, setShowEditForm] = useState(false);
+
+  const [selectedPost, setSelectedPost] = useState({});
+
+  const likePost = (pos) => {
+    const temp = [...blogArr];
     temp[pos].liked = !temp[pos].liked;
 
-    this.setState({
-      blogArr: temp,
-    });
+    setBlogArr(temp);
 
     localStorage.setItem("blogPosts", JSON.stringify(temp));
   };
 
-  toggleBlog = () => {
-    this.setState((state) => {
-      return {
-        showBlog: !state.showBlog,
-      };
-    });
-  };
+  const deletePost = (pos) => {
+    if (window.confirm(`Are you sure? ${blogArr[pos].title}`)) {
+      const temp = [...blogArr];
+      temp.splice(pos, 1);
 
-  deletePost = (pos) => {
-    if(window.confirm(`Are you sure? ${this.state.blogArr[pos].title}`)){
-      const temp = this.state.blogArr;
-    temp.splice(pos, 1);
+      setBlogArr(temp);
 
-    this.setState({
-      blogArr: temp,
-    });
-
-    localStorage.setItem("blogPosts", JSON.stringify(temp));
+      localStorage.setItem("blogPosts", JSON.stringify(temp));
     }
-    
   };
 
-  render() {
-    const blogPosts = this.state.blogArr.map((item, pos) => {
-      return (
-        <BlogCard
-          key={item.id}
-          title={item.title}
-          description={item.description}
-          liked={item.liked}
-          likePost={() => this.likePost(pos)}
-          deletePost={() => this.deletePost(pos)}
-        />
-      );
-    });
+  const blogPosts = blogArr.map((item, pos) => {
     return (
-      <>
-        <button onClick={this.toggleBlog}>
-          {this.state.showBlog ? "Скрыть блог " : "Показать блог"}
-        </button>
-        {this.state.showBlog ? (
-          <>
-            <h1>Simple Blog</h1>
-            <div className="posts">{blogPosts}</div>
-          </>
-        ) : null}
-      </>
+      <BlogCard
+        key={item.id}
+        title={item.title}
+        description={item.description}
+        liked={item.liked}
+        likePost={() => likePost(pos)}
+        deletePost={() => deletePost(pos)}
+        setShowEditForm={setShowEditForm}
+        setSelectedPost={() => setSelectedPost(item)}
+      />
     );
-  }
-}
+  });
+  return (
+    <>
+      <h1>Simple Blog</h1>
+      <div className="posts">{blogPosts}</div>
+      {showEditForm ? (
+        <EditForm
+          selectedPost={selectedPost}
+          setShowEditForm={setShowEditForm}
+        />
+      ) : null}
+    </>
+  );
+};
