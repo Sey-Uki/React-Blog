@@ -9,8 +9,7 @@ export const BlogContent = () => {
     JSON.parse(localStorage.getItem("blogPosts")) || posts
   );
 
-  const [showEditForm, setShowEditForm] = useState(false);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
 
   const likePost = (pos) => {
@@ -42,8 +41,8 @@ export const BlogContent = () => {
         liked={item.liked}
         likePost={() => likePost(pos)}
         deletePost={() => deletePost(pos)}
-        setShowEditForm={setShowEditForm}
         setSelectedPost={() => setSelectedPost(item)}
+        setIsModalVisible={setIsModalVisible}
       />
     );
   });
@@ -51,10 +50,11 @@ export const BlogContent = () => {
     <>
       <h1>Simple Blog</h1>
       <div className="posts">{blogPosts}</div>
-      {showEditForm ? (
+      {isModalVisible ? (
         <EditForm
           selectedPost={selectedPost}
-          setShowEditForm={setShowEditForm}
+          setIsModalVisible={setIsModalVisible}
+          isModalVisible={isModalVisible}
         />
       ) : null}
     </>
