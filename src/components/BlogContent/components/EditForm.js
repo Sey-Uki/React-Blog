@@ -6,7 +6,34 @@ import "antd/dist/antd.css";
 import "./EditForm.css";
 import Modal from "antd/lib/modal/Modal";
 
-export const EditForm = ({ setIsModalVisible, selectedPost, isModalVisible }) => {
+export const EditForm = ({
+  setIsModalVisible,
+  selectedPost,
+  isModalVisible,
+}) => {
+  function validateTitle(value) {
+    let error;
+    var pattern = new RegExp(/^\d/);
+    if (!value) {
+      error = "Поле не должно быть пустым!";
+    } else if (value.length < 3) {
+      error = "Название поста слишком короткое!";
+    }
+    if (pattern.test(value)) {
+      error = "Текст не может начинаться с цифры";
+    }
+    return error;
+  }
+
+  function validateDescription(value) {
+    let error;
+    if (!value) {
+      error = "Поле не должно быть пустым!";
+    } else if (value.length < 150) {
+      error = "Текст должен содержать более 150 символов!";
+    }
+    return error;
+  }
 
   const handleOk = () => {
     setIsModalVisible(false);
@@ -18,37 +45,6 @@ export const EditForm = ({ setIsModalVisible, selectedPost, isModalVisible }) =>
 
   return (
     <div className="editForm">
-      {/* <Formik
-        initialValues={{ title: selectedPost.title, description: selectedPost.description }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.title) {
-            errors.title = "Required";
-          }
-          if (!values.description) {
-            errors.description = "Required";
-          }
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values.description, values.title)
-          setTimeout(() => setSubmitting(false), 3000)
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <Field type="text" name="title" />
-            <ErrorMessage name="title" component="div" />
-            <Field type="textarea" name="description" />
-            <ErrorMessage name="description" component="div" />
-            <button type="submit" disabled={isSubmitting}>
-              Сохранить изменения
-            </button>
-            <button onClick={() => setShowEditForm(false)}>x</button>
-          </Form>
-        )}
-      </Formik> */}
-    
       <Modal
         title="Изменить пост"
         visible={isModalVisible}
@@ -61,27 +57,33 @@ export const EditForm = ({ setIsModalVisible, selectedPost, isModalVisible }) =>
             title: selectedPost.title,
             description: selectedPost.description,
           }}
-          render={() => (
+          validateOnChange={validateTitle}
+        >
+          {() => (
             <Form
               labelCol={{
-                span: 6,
+                span: 5,
               }}
               wrapperCol={{
-                span: 16,
+                span: 17,
               }}
             >
-              <Form.Item label="Title" name="title">
+              <Form.Item label="Название" name="title" validate={validateTitle}>
                 <Input name="title" />
               </Form.Item>
 
-              <Form.Item label="Description" name="description">
-                <Input.TextArea name="description" />
+              <Form.Item
+                label="Описание"
+                name="description"
+                validate={validateDescription}
+              >
+                <Input.TextArea name="description" rows="6" />
               </Form.Item>
 
               <SubmitButton>Сохранить изменения</SubmitButton>
             </Form>
           )}
-        />
+        </Formik>
       </Modal>
     </div>
   );
