@@ -5,11 +5,15 @@ import React from "react";
 import "antd/dist/antd.css";
 import "./EditForm.css";
 import Modal from "antd/lib/modal/Modal";
+import { notification } from "antd";
 
 export const EditForm = ({
   setIsModalVisible,
   selectedPost,
   isModalVisible,
+  blogArr,
+  selectedPostPos,
+  setBlogArr,
 }) => {
   function validateTitle(value) {
     let error;
@@ -43,6 +47,29 @@ export const EditForm = ({
     setIsModalVisible(false);
   };
 
+  const sendForm = (value, { setSubmitting }) => {
+    setTimeout(() => {
+      const temp = [...blogArr];
+
+      temp[selectedPostPos].title = value.title;
+      temp[selectedPostPos].description = value.description;
+
+      setBlogArr(temp);
+      localStorage.setItem("blogPosts", JSON.stringify(temp));
+      setSubmitting(false);
+      setIsModalVisible(false);
+      openNotificationWithIcon("success");
+    }, 2000);
+  };
+
+  const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: "Изменения сохранены",
+      // description:
+      //   '',
+    });
+  };
+
   return (
     <div className="editForm">
       <Modal
@@ -54,10 +81,11 @@ export const EditForm = ({
       >
         <Formik
           initialValues={{
-            title: selectedPost.title,
-            description: selectedPost.description,
+            title: blogArr[selectedPostPos].title,
+            description: blogArr[selectedPostPos].description,
           }}
           validateOnChange={validateTitle}
+          onSubmit={sendForm}
         >
           {() => (
             <Form
@@ -69,7 +97,7 @@ export const EditForm = ({
               }}
             >
               <Form.Item label="Название" name="title" validate={validateTitle}>
-                <Input name="title" />
+                <Input name="title" autoComplete="off" />
               </Form.Item>
 
               <Form.Item
@@ -80,7 +108,7 @@ export const EditForm = ({
                 <Input.TextArea name="description" rows="6" />
               </Form.Item>
 
-              <SubmitButton>Сохранить изменения</SubmitButton>
+              <SubmitButton ghost="true">Сохранить изменения</SubmitButton>
             </Form>
           )}
         </Formik>

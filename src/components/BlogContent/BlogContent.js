@@ -10,7 +10,8 @@ export const BlogContent = () => {
   );
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedPost, setSelectedPost] = useState({});
+
+  const [selectedPostPos, setSelectedPostPos] = useState(0);
 
   const likePost = (pos) => {
     const temp = [...blogArr];
@@ -41,7 +42,7 @@ export const BlogContent = () => {
         liked={item.liked}
         likePost={() => likePost(pos)}
         deletePost={() => deletePost(pos)}
-        setSelectedPost={() => setSelectedPost(item)}
+        setSelectedPostPos={() => setSelectedPostPos(pos)}
         setIsModalVisible={setIsModalVisible}
       />
     );
@@ -52,9 +53,11 @@ export const BlogContent = () => {
       <div className="posts">{blogPosts}</div>
       {isModalVisible ? (
         <EditForm
-          selectedPost={selectedPost}
           setIsModalVisible={setIsModalVisible}
           isModalVisible={isModalVisible}
+          selectedPostPos={selectedPostPos}
+          blogArr={blogArr}
+          setBlogArr={setBlogArr}
         />
       ) : null}
     </>

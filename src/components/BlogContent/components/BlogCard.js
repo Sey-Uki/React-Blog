@@ -9,8 +9,7 @@ export const BlogCard = ({
   liked,
   likePost,
   deletePost,
-  setShowEditForm,
-  setSelectedPost,
+  setSelectedPostPos,
   setIsModalVisible,
 }) => {
   const heartFill = liked ? "crimson" : "black";
@@ -30,8 +29,8 @@ export const BlogCard = ({
             </div>
           </div>
         </div>
-        <button className="editIcon" onClick={setSelectedPost}>
-          <BorderColorIcon onClick={() => setIsModalVisible(true)}/>
+        <button className="editIcon" onClick={setSelectedPostPos}>
+          <BorderColorIcon onClick={() => setIsModalVisible(true)} />
         </button>
         <button className="deleteIcon" onClick={deletePost}>
           <DeleteIcon />
