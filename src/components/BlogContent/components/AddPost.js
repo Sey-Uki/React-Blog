@@ -1,21 +1,19 @@
-// import { ErrorMessage, Field, Formik } from "formik";
+import React, { useState } from "react";
+import { Modal, Button } from "antd";
+import "antd/dist/antd.css";
+import "./AddPost.css";
 import { Form, Input, SubmitButton } from "formik-antd";
 import { Formik } from "formik";
-import React from "react";
-import "antd/dist/antd.css";
-import "./EditForm.css";
-import Modal from "antd/lib/modal/Modal";
 import { notification } from "antd";
 import { validateDescription, validateTitle } from "./validatePost";
 
-export const EditForm = ({
-  setIsModalVisible,
-  selectedPost,
-  isModalVisible,
-  blogArr,
-  selectedPostPos,
-  setBlogArr,
-}) => {
+export const AddPost = ({ blogArr, setBlogArr }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -24,14 +22,22 @@ export const EditForm = ({
     setTimeout(() => {
       const temp = [...blogArr];
 
-      temp[selectedPostPos].title = value.title;
-      temp[selectedPostPos].description = value.description;
+      const newPost = {
+        id: temp.length + 1,
+        title: value.title,
+        description: value.description,
+        liked: false,
+      };
+
+      temp.push(newPost);
 
       setBlogArr(temp);
       localStorage.setItem("blogPosts", JSON.stringify(temp));
       setSubmitting(false);
       setIsModalVisible(false);
       openNotificationWithIcon("success");
+      value.title = "";
+      value.description = "";
     }, 2000);
   };
 
@@ -44,17 +50,20 @@ export const EditForm = ({
   };
 
   return (
-    <div className="editForm">
+    <div className="AddPost">
+      <Button type="primary" onClick={showModal}>
+        Добавить пост
+      </Button>
       <Modal
-        title="Изменить пост"
+        title="Добавить пост"
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
         <Formik
           initialValues={{
-            title: blogArr[selectedPostPos].title,
-            description: blogArr[selectedPostPos].description,
+            title: "",
+            description: "",
           }}
           onSubmit={sendForm}
         >

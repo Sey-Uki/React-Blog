@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { posts } from "../../shared/projectData";
 import "./BlogContent.css";
+import { AddPost } from "./components/AddPost";
 import { BlogCard } from "./components/BlogCard";
 import { EditForm } from "./components/EditForm";
 
@@ -50,6 +51,7 @@ export const BlogContent = () => {
   return (
     <>
       <h1>Simple Blog</h1>
+      <AddPost blogArr={blogArr} setBlogArr={setBlogArr} />
       <div className="posts">{blogPosts}</div>
       {isModalVisible ? (
         <EditForm
