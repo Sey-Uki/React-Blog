@@ -5,7 +5,10 @@ import "./AddPost.css";
 import { Form, Input, SubmitButton } from "formik-antd";
 import { Formik } from "formik";
 import { notification } from "antd";
-import { validateDescription, validateTitle } from "./validatePost";
+import {
+  validateDescription,
+  validateTitle,
+} from "../../../shared/validatePost";
 
 export const AddPost = ({ blogArr, setBlogArr }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -19,26 +22,30 @@ export const AddPost = ({ blogArr, setBlogArr }) => {
   };
 
   const sendForm = (value, { setSubmitting }) => {
-    setTimeout(() => {
-      const temp = [...blogArr];
+    const temp = [...blogArr];
+    const newPost = {
+      id: temp.length + 1,
+      title: value.title,
+      description: value.description,
+      liked: false,
+    };
+    temp.push(newPost);
 
-      const newPost = {
-        id: temp.length + 1,
-        title: value.title,
-        description: value.description,
-        liked: false,
-      };
+    setBlogArr(temp);
 
-      temp.push(newPost);
+    fetch("https://609012a53847340017020cb2.mockapi.io/MarketCategory/posts", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newPost),
+    });
 
-      setBlogArr(temp);
-      localStorage.setItem("blogPosts", JSON.stringify(temp));
-      setSubmitting(false);
-      setIsModalVisible(false);
-      openNotificationWithIcon("success");
-      value.title = "";
-      value.description = "";
-    }, 2000);
+    setSubmitting(false);
+    setIsModalVisible(false);
+    openNotificationWithIcon("success");
+    value.title = "";
+    value.description = "";
   };
 
   const openNotificationWithIcon = (type) => {

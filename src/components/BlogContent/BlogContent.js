@@ -1,14 +1,11 @@
-import { useState } from "react";
-import { posts } from "../../shared/projectData";
+import { useEffect, useState } from "react";
 import "./BlogContent.css";
 import { AddPost } from "./components/AddPost";
 import { BlogCard } from "./components/BlogCard";
 import { EditForm } from "./components/EditForm";
 
 export const BlogContent = () => {
-  const [blogArr, setBlogArr] = useState(
-    JSON.parse(localStorage.getItem("blogPosts")) || posts
-  );
+  const [blogArr, setBlogArr] = useState([]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -20,19 +17,43 @@ export const BlogContent = () => {
 
     setBlogArr(temp);
 
-    localStorage.setItem("blogPosts", JSON.stringify(temp));
+    fetch(
+      `https://609012a53847340017020cb2.mockapi.io/MarketCategory/posts/${temp[pos].id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(temp[pos]),
+      }
+    );
   };
 
   const deletePost = (pos) => {
-    if (window.confirm(`Are you sure? ${blogArr[pos].title}`)) {
-      const temp = [...blogArr];
-      temp.splice(pos, 1);
+    const temp = [...blogArr];
 
-      setBlogArr(temp);
+    fetch(
+      `https://609012a53847340017020cb2.mockapi.io/MarketCategory/posts/${temp[pos].id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    temp.splice(pos, 1);
 
-      localStorage.setItem("blogPosts", JSON.stringify(temp));
-    }
+    setBlogArr(temp);
   };
+
+  useEffect(() => {
+    fetch("https://609012a53847340017020cb2.mockapi.io/MarketCategory/posts")
+      .then(async (res) => {
+        const json = await res.json();
+        setBlogArr(json);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const blogPosts = blogArr.map((item, pos) => {
     return (
@@ -48,6 +69,7 @@ export const BlogContent = () => {
       />
     );
   });
+
   return (
     <>
       <h1>Simple Blog</h1>

@@ -6,11 +6,13 @@ import "antd/dist/antd.css";
 import "./EditForm.css";
 import Modal from "antd/lib/modal/Modal";
 import { notification } from "antd";
-import { validateDescription, validateTitle } from "./validatePost";
+import {
+  validateDescription,
+  validateTitle,
+} from "../../../shared/validatePost";
 
 export const EditForm = ({
   setIsModalVisible,
-  selectedPost,
   isModalVisible,
   blogArr,
   selectedPostPos,
@@ -21,18 +23,24 @@ export const EditForm = ({
   };
 
   const sendForm = (value, { setSubmitting }) => {
-    setTimeout(() => {
-      const temp = [...blogArr];
+    const temp = [...blogArr];
+    temp[selectedPostPos].title = value.title;
+    temp[selectedPostPos].description = value.description;
+    fetch(
+      `https://609012a53847340017020cb2.mockapi.io/MarketCategory/posts/${temp[selectedPostPos].id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(temp[selectedPostPos]),
+      }
+    );
 
-      temp[selectedPostPos].title = value.title;
-      temp[selectedPostPos].description = value.description;
-
-      setBlogArr(temp);
-      localStorage.setItem("blogPosts", JSON.stringify(temp));
-      setSubmitting(false);
-      setIsModalVisible(false);
-      openNotificationWithIcon("success");
-    }, 2000);
+    setBlogArr(temp);
+    setSubmitting(false);
+    setIsModalVisible(false);
+    openNotificationWithIcon("success");
   };
 
   const openNotificationWithIcon = (type) => {
