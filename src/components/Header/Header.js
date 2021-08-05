@@ -4,9 +4,9 @@ export const Header = () => {
   return (
     <header>
       <nav>
-        <a href="#first">Home</a>
-        <a href="#second">About</a>
-        <a href="#third">Contact</a>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
       </nav>
     </header>
   );

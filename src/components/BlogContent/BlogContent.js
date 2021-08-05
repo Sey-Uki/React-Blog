@@ -3,13 +3,19 @@ import "./BlogContent.css";
 import { AddPost } from "./components/AddPost";
 import { BlogCard } from "./components/BlogCard";
 import { EditForm } from "./components/EditForm";
+import { Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
+import { useSelector } from "react-redux";
+
+const { confirm } = Modal;
 
 export const BlogContent = () => {
   const [blogArr, setBlogArr] = useState([]);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
   const [selectedPostPos, setSelectedPostPos] = useState(0);
+
+  const isModalVisible = useSelector((state) => state.modal.isModalVisible);
 
   const likePost = (pos) => {
     const temp = [...blogArr];
@@ -31,19 +37,34 @@ export const BlogContent = () => {
 
   const deletePost = (pos) => {
     const temp = [...blogArr];
+    confirm({
+      title: "Вы хотите удалить этот пост?",
+      icon: <ExclamationCircleOutlined />,
+      content: "Действия необратимы",
+      okText: "Да",
+      okType: "danger",
+      cancelText: "Нет",
+      onOk() {
+        console.log("OK");
 
-    fetch(
-      `https://609012a53847340017020cb2.mockapi.io/MarketCategory/posts/${temp[pos].id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    );
-    temp.splice(pos, 1);
+        fetch(
+          `https://609012a53847340017020cb2.mockapi.io/MarketCategory/posts/${temp[pos].id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
 
-    setBlogArr(temp);
+        temp.splice(pos, 1);
+
+        setBlogArr(temp);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
   useEffect(() => {
@@ -65,7 +86,6 @@ export const BlogContent = () => {
         likePost={() => likePost(pos)}
         deletePost={() => deletePost(pos)}
         setSelectedPostPos={() => setSelectedPostPos(pos)}
-        setIsModalVisible={setIsModalVisible}
       />
     );
   });
@@ -77,8 +97,6 @@ export const BlogContent = () => {
       <div className="posts">{blogPosts}</div>
       {isModalVisible ? (
         <EditForm
-          setIsModalVisible={setIsModalVisible}
-          isModalVisible={isModalVisible}
           selectedPostPos={selectedPostPos}
           blogArr={blogArr}
           setBlogArr={setBlogArr}

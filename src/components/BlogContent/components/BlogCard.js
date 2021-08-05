@@ -2,6 +2,8 @@ import "./BlogCard.css";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import DeleteIcon from "@material-ui/icons/Delete";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
+import { modalShow } from "../../../features/modalSlice";
+import { useDispatch } from "react-redux";
 
 export const BlogCard = ({
   title,
@@ -10,9 +12,11 @@ export const BlogCard = ({
   likePost,
   deletePost,
   setSelectedPostPos,
-  setIsModalVisible,
+  showDeleteConfirm,
 }) => {
   const heartFill = liked ? "crimson" : "black";
+
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -30,7 +34,7 @@ export const BlogCard = ({
           </div>
         </div>
         <button className="editIcon" onClick={setSelectedPostPos}>
-          <BorderColorIcon onClick={() => setIsModalVisible(true)} />
+          <BorderColorIcon onClick={() => dispatch(modalShow())} />
         </button>
         <button className="deleteIcon" onClick={deletePost}>
           <DeleteIcon />

@@ -1,3 +1,16 @@
 .AddPost{
     text-align: center;
 }
+
+.ant-btn-primary.my-primary{
+    color: cornsilk;
+    background-color: #b3936a;
+    border-color: #bc9b70;
+    transition-duration: 500ms;
+}
+
+.ant-btn-primary:hover {
+    color: #b3936a;
+    background-color: white;
+    border-color: #bc9b70;  
+}

@@ -10,17 +10,12 @@ import {
   validateDescription,
   validateTitle,
 } from "../../../shared/validatePost";
+import { useDispatch, useSelector } from "react-redux";
+import { modalHide } from "../../../features/modalSlice";
 
-export const EditForm = ({
-  setIsModalVisible,
-  isModalVisible,
-  blogArr,
-  selectedPostPos,
-  setBlogArr,
-}) => {
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+export const EditForm = ({ blogArr, selectedPostPos, setBlogArr }) => {
+  const dispatch = useDispatch();
+  const isModalVisible = useSelector((state) => state.modal.isModalVisible);
 
   const sendForm = (value, { setSubmitting }) => {
     const temp = [...blogArr];
@@ -39,7 +34,7 @@ export const EditForm = ({
 
     setBlogArr(temp);
     setSubmitting(false);
-    setIsModalVisible(false);
+    dispatch(modalHide());
     openNotificationWithIcon("success");
   };
 
@@ -56,7 +51,7 @@ export const EditForm = ({
       <Modal
         title="Изменить пост"
         visible={isModalVisible}
-        onCancel={handleCancel}
+        onCancel={() => dispatch(modalHide())}
         footer={null}
       >
         <Formik

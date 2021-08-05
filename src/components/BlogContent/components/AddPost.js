@@ -58,7 +58,7 @@ export const AddPost = ({ blogArr, setBlogArr }) => {
 
   return (
     <div className="AddPost">
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" className={'my-primary'} onClick={showModal} >
         Добавить пост
       </Button>
       <Modal
