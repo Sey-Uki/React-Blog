@@ -3,18 +3,8 @@ import { Formik } from "formik";
 import "antd/dist/antd.css";
 
 export const LoginPage = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    console.log(values.username);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
   const submitLogin = (value, { setSubmitting }) => {
-    console.log(value.username);
-
+    console.log(value)
     setSubmitting(false);
   };
   return (
@@ -35,11 +25,9 @@ export const LoginPage = () => {
           wrapperCol={{
             span: 8,
           }}
-        //   onFinish={onFinish}
-        //   onFinishFailed={onFinishFailed}
         >
           <Form.Item label="Имя" name="username">
-            <Input name="usename" />
+            <Input name="username" />
           </Form.Item>
 
           <Form.Item label="Пароль" name="password">

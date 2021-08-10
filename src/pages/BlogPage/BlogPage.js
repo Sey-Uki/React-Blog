@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./BlogContent.css";
+import "./BlogPage.css";
 import { AddPost } from "./components/AddPost";
 import { BlogCard } from "./components/BlogCard";
 import { EditForm } from "./components/EditForm";
@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const { confirm } = Modal;
 
-export const BlogContent = () => {
+export const BlogPage = () => {
   const [blogArr, setBlogArr] = useState([]);
 
   const [selectedPostPos, setSelectedPostPos] = useState(0);

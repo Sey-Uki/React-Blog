@@ -1,9 +1,9 @@
 import { Footer } from "./components/Footer/Footer";
 import "./App.css";
 import { Header } from "./components/Header/Header";
-import { BlogContent } from "./components/BlogContent/BlogContent";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
+import { BlogPage } from "./pages/BlogPage/BlogPage";
 
 export function App() {
   return (
@@ -13,7 +13,7 @@ export function App() {
         <main>
           <Switch>
             <Route exact path="/">
-              <BlogContent />
+              <BlogPage />
             </Route>
             <Route exact path="/login">
               <LoginPage />
