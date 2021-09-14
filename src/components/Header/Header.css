@@ -35,7 +35,8 @@ header a:hover {
   color: #b3936a
 }
 
-
-
-
-
+.mainNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
-import "./BlogPage.css";
+import "./Blog.css";
 import { AddPost } from "./components/AddPost";
 import { BlogCard } from "./components/BlogCard";
 import { EditForm } from "./components/EditForm";
-import { Modal } from "antd";
+import { Modal, Skeleton } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { useSelector } from "react-redux";
 
 const { confirm } = Modal;
 
-export const BlogPage = () => {
+export const Blog = () => {
   const [blogArr, setBlogArr] = useState([]);
 
   const [selectedPostPos, setSelectedPostPos] = useState(0);
 
-  const isModalVisible = useSelector((state) => state.modal.isModalVisible);
+  const isModalVisible = useSelector(
+    (state) => state.modalReducer.isModalVisible
+  );
 
   const likePost = (pos) => {
     const temp = [...blogArr];
@@ -76,19 +78,28 @@ export const BlogPage = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const blogPosts = blogArr.map((item, pos) => {
-    return (
-      <BlogCard
-        key={item.id}
-        title={item.title}
-        description={item.description}
-        liked={item.liked}
-        likePost={() => likePost(pos)}
-        deletePost={() => deletePost(pos)}
-        setSelectedPostPos={() => setSelectedPostPos(pos)}
-      />
-    );
-  });
+  const skeletons = [
+    <Skeleton active />,
+    <Skeleton active />,
+    <Skeleton active />
+  ]
+
+  const blogPosts =
+    blogArr.length > 0 ? (
+      blogArr.map((item, pos) => {
+        return (
+          <BlogCard
+            key={item.id}
+            title={item.title}
+            description={item.description}
+            liked={item.liked}
+            likePost={() => likePost(pos)}
+            deletePost={() => deletePost(pos)}
+            setSelectedPostPos={() => setSelectedPostPos(pos)}
+          />
+        );
+      })
+    ) : <div className="skeletons">{skeletons}</div>
 
   return (
     <>

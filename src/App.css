@@ -1,7 +1,16 @@
- button{
-    cursor: pointer;
-    background-color: unset;
-    outline: unset;
-    border: none;
-  }
-  
+main {
+  padding: 10px 0;
+  min-height: calc(100vh - 100px);
+}
+
+button{
+  cursor: pointer;
+  background-color: unset;
+  outline: unset;
+  border: none;
+}
+
+.container {
+  width: 900px;
+  margin: 0 auto;
+}

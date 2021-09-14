@@ -15,7 +15,7 @@ import { modalHide } from "../../../features/modalSlice";
 
 export const EditForm = ({ blogArr, selectedPostPos, setBlogArr }) => {
   const dispatch = useDispatch();
-  const isModalVisible = useSelector((state) => state.modal.isModalVisible);
+  const isModalVisible = useSelector((state) => state.modalReducer.isModalVisible);
 
   const sendForm = (value, { setSubmitting }) => {
     const temp = [...blogArr];

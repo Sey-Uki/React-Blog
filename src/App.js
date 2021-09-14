@@ -1,24 +1,18 @@
 import { Footer } from "./components/Footer/Footer";
 import "./App.css";
 import { Header } from "./components/Header/Header";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { LoginPage } from "./pages/LoginPage/LoginPage";
-import { BlogPage } from "./pages/BlogPage/BlogPage";
+import { BrowserRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Routes } from "./components/Routes/Routes";
 
 export function App() {
+  const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
-        <main>
-          <Switch>
-            <Route exact path="/">
-              <BlogPage />
-            </Route>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-          </Switch>
+        {isLoggedIn && <Header />}
+        <main className="container">
+          <Routes />
         </main>
         <Footer year={new Date().getFullYear()} />
       </div>

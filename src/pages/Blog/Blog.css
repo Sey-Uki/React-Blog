@@ -1,0 +1,13 @@
+
+  
+  h1 {
+    text-align: center;
+  }
+
+.post img{
+  width: 20px;
+}
+
+.skeletons > div {
+  padding: 20px 0 5px 0;
+}
